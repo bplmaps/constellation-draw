@@ -20,6 +20,7 @@
   import constellationsCn from "../assets/constellations.lines.cn.min.json";
 
   import Toggle from "./ui/Toggle.svelte";
+  import { writeConstellation } from "./fauna";
 
   proj4.defs(
     "AEQD",
@@ -108,22 +109,15 @@
   };
 
   let shapeString = "";
-  let form;
 
   const goToDonate = () => {
+    s = "saving";
     let w = new WKT();
     let f = drawSource.getFeatures()[0];
     shapeString = w.writeFeature(f);
-
-    const formData = new FormData(form);
-
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(formData).toString(),
-    })
-      .then(() => console.log("Form successfully submitted"))
-      .catch((error) => alert(error));
+    writeConstellation(shapeString).then((d) => {
+      window.location.href = `https://leventhalmap.donorsupport.co/page/JUNE2024?drawing-id=${d.ref.value.id}`;
+    }).catch(()=>{window.alert("Sorry, something went wrong. Do you mind refreshing and trying again?"); s = "blank"; });
   };
 
   draw.on("drawstart", () => {
@@ -143,7 +137,7 @@
       view: new View({
         center: [0, 0],
         projection: aeqd,
-        zoom: 2,
+        zoom: 1.5,
       }),
     });
 
@@ -188,15 +182,15 @@
 <div id="outer-div" class="flex flex-col">
   <div id="map-div" class="flex-grow w-full"></div>
   <div class="p-4 text-white flex flex-col items-center">
-    <div class="font-black text-lg">
+    <div class="font-black bg-blue-900 p-3 text-lg">
       {#if s == "blank"}
-        Click in the star chart to start drawing your constellation.
+        Click the red dot in the star chart to start drawing your constellation.
       {:else if s == "finishedDrawing"}
-        Looks great! <button
+        Looks great! ✨ <button
           type="button"
           on:click={goToDonate}
           class="rounded-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
-          >Name your constellation and donate</button
+          >Donate to save and name your constellation</button
         >
         or
         <button
@@ -206,7 +200,7 @@
           >Start over</button
         >
       {:else if s == "currentlyDrawing"}
-        Double-click to finish your constellation shape
+        Keep clicking to add points, then double-click to finish your constellation shape
       {/if}
     </div>
     <div class="flex items-center p-2">
@@ -247,17 +241,6 @@
         >Reset drawing</button
       >
     </div>
-  </div>
-
-  <div class="hidden">
-    <form
-      name="constellation-draw"
-      method="POST"
-      data-netlify="true"
-      bind:this={form}
-    >
-      <input type="hidden" name="constellation-string" value={shapeString} />
-    </form>
   </div>
 </div>
 

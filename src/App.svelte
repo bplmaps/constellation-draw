@@ -3,10 +3,15 @@
   import Instructions from "./lib/Instructions.svelte";
 </script>
 
-<main>
-  <Instructions />
-  <div id="map-holder">
-    <Map />
+<main class="w-full">
+  <div class="w-full flex flex-col items-center pb-8">
+    <Instructions />
+  </div>
+
+  <div class="w-full flex-col items-center flex">
+    <div id="map-holder">
+      <Map />
+    </div>
   </div>
 </main>
 
