@@ -188,7 +188,7 @@
         Looks great! ✨ You can keep adding shapes, or<br/> <button
           type="button"
           on:click={goToDonate}
-          class="rounded-md text-blue-900 bg-white/80 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/70"
+          class="rounded-md text-blue-950 bg-white/80 px-2.5 py-1.5 text-sm font-semibold  shadow-sm hover:bg-white/70"
           >Donate and name your constellation</button
         >
         <button
