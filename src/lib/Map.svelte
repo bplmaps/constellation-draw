@@ -121,7 +121,6 @@
   };
 
   draw.on("drawstart", () => {
-    drawSource.clear();
     s = "currentlyDrawing";
   });
 
@@ -186,13 +185,12 @@
       {#if s == "blank"}
         Click the red dot in the star chart to start drawing your constellation.
       {:else if s == "finishedDrawing"}
-        Looks great! ✨ <button
+        Looks great! ✨ You can keep adding shapes, or<br/> <button
           type="button"
           on:click={goToDonate}
-          class="rounded-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
-          >Donate to save and name your constellation</button
+          class="rounded-md text-blue-900 bg-white/80 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-white/70"
+          >Donate and name your constellation</button
         >
-        or
         <button
           type="button"
           on:click={clearDrawing}
@@ -200,7 +198,7 @@
           >Start over</button
         >
       {:else if s == "currentlyDrawing"}
-        Keep clicking to add points, then double-click to finish your constellation shape
+        Keep clicking to add points, then double-click to finish your shape
       {/if}
     </div>
     <div class="flex items-center p-2">
