@@ -108,13 +108,12 @@
     s = "blank";
   };
 
-  let shapeString = "";
 
   const goToDonate = () => {
     s = "saving";
     let w = new WKT();
-    let f = drawSource.getFeatures()[0];
-    shapeString = w.writeFeature(f);
+    let f = drawSource.getFeatures();
+    let shapeString = f.map(d => {return w.writeFeature(d)})
     writeConstellation(shapeString).then((d) => {
       window.location.href = `https://leventhalmap.donorsupport.co/page/JUNE2024?drawing-id=${d.ref.value.id}`;
     }).catch(()=>{window.alert("Sorry, something went wrong. Do you mind refreshing and trying again?"); s = "blank"; });
