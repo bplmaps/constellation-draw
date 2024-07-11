@@ -28,3 +28,19 @@ export const writeConstellation = async (shapeString) => {
     });
 
 }
+
+export const loadDrawing = async (ref) => {
+
+    return new Promise((resolve, reject) => {
+
+        client.query(
+            q.Get(q.Ref(q.Collection('constellations'), ref)),
+        )
+            .then((d) => { resolve(d); })
+            .catch((err) => {
+                console.error(err);
+                reject();
+            })
+    });
+
+}
